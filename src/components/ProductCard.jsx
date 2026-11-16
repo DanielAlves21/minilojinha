@@ -52,7 +52,13 @@ export default function ProductCard({ product, onViewDetails }) {
                     <i className="pi pi-star-fill"></i>
 
                     <strong>
-                        {product.rating?.rate ?? "N/A"}
+                        {product.rating ? (
+                            <>
+                                ⭐ {product.rating.rate} ({product.rating.count} avaliações)
+                            </>
+                        ) : (
+                            <span>Sem avaliações</span>
+                        )}
                     </strong>
 
                     <small>

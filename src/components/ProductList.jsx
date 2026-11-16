@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import ProductCard from "./ProductCard";
+import ProductForm from "./ProductForm";
 import "./ProductList.css";
 
 const API_URL = "https://fakestoreapi.com/products";
@@ -47,6 +48,13 @@ export default function ProductList() {
         console.log("Produto selecionado:", product);
     };
 
+    const handleAddProduct = (newProduct) => {
+        setProducts((currentProducts) => [
+            newProduct,
+            ...currentProducts
+        ]);
+    };
+
     if (loading) {
         return (
             <div className="product-state">
@@ -68,16 +76,10 @@ export default function ProductList() {
         );
     }
 
-    if (!products.length) {
-        return (
-            <div className="product-state">
-                <p>Nenhum produto encontrado.</p>
-            </div>
-        );
-    }
-
     return (
         <section className="products-container">
+
+            <ProductForm onAddProduct={handleAddProduct} />
 
             <header className="products-header">
                 <div>
@@ -90,15 +92,21 @@ export default function ProductList() {
                 </span>
             </header>
 
-            <div className="products-grid">
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                        onViewDetails={handleViewDetails}
-                    />
-                ))}
-            </div>
+            {products.length > 0 ? (
+                <div className="products-grid">
+                    {products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                            onViewDetails={handleViewDetails}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="product-state">
+                    <p>Nenhum produto cadastrado.</p>
+                </div>
+            )}
 
         </section>
     );
